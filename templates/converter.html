@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+	<head>
+		<title>Конвертация</title>
+	</head>
+
+	<body>
+		<form action="{{ url_for('convert_result') }}" method="POST">
+			<h3>Выберите валюты для обмена:</h3>
+			Конвертация из:<br>
+			<select name="cur1">
+				{% for row in rows %}
+				<option value="{{ row["name"] }}"> {{ row["name"] }} </option>
+				{% endfor %}
+			</select><br>
+			<!-- <input type="text" name="cur1" /><br> -->
+
+
+			В количестве<br>
+			<input type="number" name="amount" min="1" value="1" /><br><br>
+
+
+			Конвертация в:<br>
+			<select name="cur2">
+				{% for row in rows %}
+				<option value="{{ row["name"] }}"> {{ row["name"] }}</option>
+				{% endfor %}
+			</select><br><br>
+			
+			<input type="submit" value="Submit" /><br>
+		</form>
+	</body>
+</html>
