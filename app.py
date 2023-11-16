@@ -9,7 +9,7 @@ def home():
     con.row_factory = sqlite3.Row
 
     cur = con.cursor()
-    cur.execute("SELECT * FROM currencies ORDER BY name")
+    cur.execute("SELECT * FROM currencies WHERE charcode NOT LIKE 'RUB' ORDER BY name")
 
     rows = cur.fetchall()
     con.close()
@@ -37,5 +37,30 @@ def convert_result():
             cur2 = request.form['cur2']
             amount = int(request.form['amount'])
         finally:
-            msg = f"Перевод из {cur1} в {cur2} в количестве {amount}"
+            # TODO: refactor this into business logic layer
+
+            con = sqlite3.connect("database.db")
+            #con.row_factory = sqlite3.Row
+
+            cur = con.cursor()
+            cur.execute(f"SELECT rate FROM currencies WHERE name = '{cur1}'")
+            cur1rate = cur.fetchone()[0]
+
+            cur = con.cursor()
+            cur.execute(f"SELECT rate FROM currencies WHERE name = '{cur2}'")
+            cur2rate = cur.fetchone()[0]
+            
+            con.close()
+
+
+            result = 0
+            if cur2 == "Российский рубль":
+                result = cur1rate * amount 
+            elif cur1 == "Российский рубль":
+                result = 1.0 / cur2rate * amount
+            else:
+                result = cur1rate / cur2rate * amount
+
+            msg = f"Перевод из {cur1} в количестве {amount} в {cur2}. Результат: {result}"
+
             return render_template("convert_result.html",msg=msg)

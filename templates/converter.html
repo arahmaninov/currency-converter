@@ -9,7 +9,7 @@
 		<form action="{{ url_for('convert_result') }}" method="POST">
 			<h3>Выберите валюты для обмена:</h3>
 			Конвертация из:<br>
-			<select name="cur1">
+			<select name="cur1" value="Евро">
 				{% for row in rows %}
 				<option value="{{ row["name"] }}"> {{ row["name"] }} </option>
 				{% endfor %}

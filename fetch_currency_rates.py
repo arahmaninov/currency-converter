@@ -41,5 +41,16 @@ for currency in root.findall('Valute'):
         print("ERROR in the INSERT")
 
     currency_counter += 1
+    
+# add RUB for conversion purposes
+try:
+    with sqlite3.connect('database.db') as con:
+        current = con.cursor()
+        current.execute("INSERT INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", ("RUB", "Российский рубль", 1))
+        con.commit()
+        print("RUB successfully added to the database")
+except:
+    con.rollback()
+    print("ERROR in the INSERT RUB")
 
 print(f"\nВсего {currency_counter} валют")
