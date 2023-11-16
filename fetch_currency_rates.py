@@ -7,7 +7,7 @@ conn = sqlite3.connect('database.db')
 print("Connected to database successfully")
 cur = conn.cursor()
 cur.execute('DROP TABLE IF EXISTS currencies') # clear the table
-cur.execute('CREATE TABLE currencies (numcode INTEGER, charcode TEXT, name TEXT, rate REAL)')
+cur.execute('CREATE TABLE currencies (charcode TEXT, name TEXT, rate REAL)')
 
 conn.close()
 
@@ -25,16 +25,15 @@ print()
 # Filling in the database
 currency_counter = 0
 for currency in root.findall('Valute'):
-    numcode = currency.find('NumCode').text
     charcode = currency.find('CharCode').text
     name = currency.find('Name').text
     torub = currency.find('VunitRate').text
-    print(f"Цифр. код валюты: {numcode} Букв. код валюты: {charcode} Название: {name} Курс: {torub}")
+    print(f"Букв. код валюты: {charcode} Название: {name} Курс: {torub}")
 
     try:
         with sqlite3.connect('database.db') as con:
             current = con.cursor()
-            current.execute("INSERT INTO currencies (numcode, charcode, name, rate) VALUES (?, ?, ?, ?)", (int(numcode), charcode, name, float(torub.replace(',', '.'))))
+            current.execute("INSERT INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", (charcode, name, float(torub.replace(',', '.'))))
             con.commit()
             print("Record successfully added to the database")
     except:
