@@ -6,7 +6,7 @@ import sqlite3
 conn = sqlite3.connect('database.db')
 print("Connected to database successfully")
 cur = conn.cursor()
-cur.execute('DROP TABLE currencies') # clear the table
+cur.execute('DROP TABLE IF EXISTS currencies') # clear the table
 cur.execute('CREATE TABLE currencies (numcode INTEGER, charcode TEXT, name TEXT, rate REAL)')
 
 conn.close()

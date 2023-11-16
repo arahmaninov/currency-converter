@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, with=device-width">
+		<title>Конвертация валют</title>
+	</head>
+
+	<body>
+		<table border="1px">
+			<thead>
+				<td><strong>Цифр. код</strong></td>
+				<td><strong>Букв. код</strong></td>
+				<td><strong>Валюта</strong></td>
+				<td><strong>Курс</strong></td>
+			</thead>
+
+			{% for row in rows %}
+			<tr>
+				<td> {{ row["numcode"] }} </td>
+				<td> {{ row["charcode"] }} </td>
+				<td> {{ row["name"] }} </td>
+				<td> {{ row["rate"] }} </td>
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+</html>
