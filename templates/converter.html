@@ -3,10 +3,12 @@
 <html lang="ru">
 	<head>
 		<title>Конвертация</title>
+		<script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
 	</head>
 
 	<body>
-		<form action="{{ url_for('convert_result') }}" method="POST">
+		<!-- <form action="{{ url_for('convert_result') }}" method="POST"> -->
+		<form hx-post="/convert_result" hx-target="#resfield" hx-swap="innerHTML">
 			<h3>Выберите валюты для обмена:</h3>
 			Конвертация из:<br>
 			<select name="cur1" value="Евро">
@@ -28,7 +30,13 @@
 				{% endfor %}
 			</select><br><br>
 			
-			<input type="submit" value="Submit" /><br>
+			<input type="submit" value="Submit"><br><br>
+
 		</form>
+			<div id="resfield">
+				{% block result %}
+				{% endblock %}
+			</div>
+
 	</body>
 </html>

@@ -3,6 +3,8 @@ import sqlite3
 
 app = Flask(__name__)
 
+counter = 0
+
 @app.route("/")
 def home():
     con = sqlite3.connect("database.db")
@@ -16,6 +18,14 @@ def home():
 
     return render_template("index.html", rows=rows)
 
+
+@app.route("/button", methods = ['POST', 'GET'])
+def button():
+    if request.method == 'POST':
+        global counter
+        counter += 1
+    return render_template("button.html", counter=counter)
+
 @app.route("/convert")
 def convert():
     con = sqlite3.connect("database.db")
@@ -26,7 +36,7 @@ def convert():
 
     rows = cur.fetchall()
     con.close()
-
+   
     return render_template("converter.html", rows=rows)
 
 @app.route("/convert_result", methods = ['POST', 'GET'])
