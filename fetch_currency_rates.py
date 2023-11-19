@@ -7,8 +7,7 @@ def fetch():
     conn = sqlite3.connect('database.db')
     print("Connected to database successfully")
     cur = conn.cursor()
-    cur.execute('DROP TABLE IF EXISTS currencies') # clear the table
-    cur.execute('CREATE TABLE currencies (charcode TEXT, name TEXT, rate REAL)')
+    cur.execute('CREATE TABLE IF NOT EXISTS currencies (charcode TEXT UNIQUE, name TEXT, rate REAL)')
 
     conn.close()
 
@@ -34,7 +33,7 @@ def fetch():
         try:
             with sqlite3.connect('database.db') as con:
                 current = con.cursor()
-                current.execute("INSERT INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", (charcode, name, float(torub.replace(',', '.'))))
+                current.execute("INSERT OR REPLACE INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", (charcode, name, float(torub.replace(',', '.'))))
                 con.commit()
                 print("Record successfully added to the database")
         except:
@@ -47,7 +46,7 @@ def fetch():
     try:
         with sqlite3.connect('database.db') as con:
             current = con.cursor()
-            current.execute("INSERT INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", ("RUB", "Российский рубль", 1))
+            current.execute("INSERT OR REPLACE INTO currencies (charcode, name, rate) VALUES (?, ?, ?)", ("RUB", "Российский рубль", 1))
             con.commit()
             print("RUB successfully added to the database")
     except:
